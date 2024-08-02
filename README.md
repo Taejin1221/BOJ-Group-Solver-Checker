@@ -8,11 +8,11 @@
     [
         {
         "handle": "<handle>",
-        "problems": [<problem>, <problem>, ...]
+        "problems": [1000, 1001, 1002]
         }, {
         "handle": "<handle>",
-        "problems": [<problem>, <problem>, ...]
-        }, ...
+        "problems": [2000, 2001]
+        }, 
     ]
     ```
 2. `-s` 옵션으로 `.json` 파일을 명령행 인자로 넣어주어 실행
