@@ -1,6 +1,6 @@
 import json, sys
 
-from BOJ_Crawler import get_solved_problem, get_tag_problems
+from BOJ_Crawler import get_solved_problem, get_tag_problems, sort_problems_by_level
 
 if (sys.argv[1] == '-s' or sys.argv[1] == '--solved'): # Group member들이 푼 문제 list가 주어졌을 때
     with open(sys.argv[2]) as f:
@@ -48,7 +48,7 @@ if (oper == 'm'):
             if (len(solved_handle) > 0):
                 print(f"Handle: {', '.join(solved_handle)}")
             else:
-                print(f"No, https://boj.kr/{problem}")
+                print(f"No, https://www.acmicpc.net/problem/{problem}")
         except ValueError as e:
             print('Error: You can input only "int" and "q"')
         print('')
@@ -60,7 +60,12 @@ elif (oper == 't'):
     tag = input('Input tag: ')
     res = get_tag_problems(tag)
     if (res['success']):
-        problems = res['problems']
+        sort_res = sort_problems_by_level(res['problems'])
+        if (sort_res['success']):
+            problems = sort_res['problems']
+        else:
+            print(f"Error: {tag}, {res['statusCode']}")
+            sys.exit(1)
     else:
         print(f"Error: {tag}, {res['statusCode']}")
         sys.exit(1)
@@ -68,8 +73,8 @@ elif (oper == 't'):
     for problem in problems:
         solved_handle = []
         for solved_list in solved_problem_list:
-            if (problem in solved_list['problems']):
+            if (problem['id'] in solved_list['problems']):
                 solved_handle.append(solved_list['handle'])
 
         if (len(solved_handle) == 0):
-            print(f"Unsolved: {problem}, 'https://boj.kr/{problem}'")
+            print(f"{problem['level']:12}, 'https://www.acmicpc.net/problem/{problem['id']}'")

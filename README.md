@@ -35,7 +35,7 @@
 1. `Do you input manually or choose tag([m/t])?` 문구에서 `m` 입력
 2. 문제 번호 입력
     1. 푼 멤버가 있을 때 `Handle: <handle>, <handle>` 형식으로 멤버 출력
-    2. 푼 멤버가 없을 때 `No, https://boj.kr/<problem>` 형식으로 링크 출력
+    2. 푼 멤버가 없을 때 `No, https://www.acmicpc.net/problem/<problem>` 형식으로 링크 출력
 
 #### 2-2. 알고리즘 태그 입력
 1. `Do you input manually or choose tag([m/t])?` 문구에서 `t` 입력
@@ -43,7 +43,7 @@
     - 태그 번호 확인 법
         1. [백준 알고리즘](https://www.acmicpc.net/problem/tags)에서 원하는 알고리즘 클릭
         2. `https://www.acmicpc.net/problemset?sort=ac_desc&algo=<tag>` 와 같은 형식에서 `<tag>`가 알고리즘의 태그 번호
-3. 모든 그룹원들이 풀지 않은 문제가 `Unsolved: <problem>, 'https://boj.kr/<problem>'` 형식으로 출력
+3. 모든 그룹원들이 풀지 않은 문제가 `<level>, 'https://www.acmicpc.net/problem/<problem>'` 형식으로 출력
 
 # BOJ_Crawler
 - BOJ 홈페이지 크롤러
@@ -63,4 +63,13 @@
 - Return
     - `Dictionary`
         - 성공시 `{"success": True, "problems": <problem list>}`
+        - 실패시 `{"success": False, "statusCode": <error status code>}`
+
+## sort_problems_by_level
+- 문제 리스트가 주어지면 난이도 별로 정렬
+- Argument
+    - `problems`: 문제 번호 리스트
+- Return
+    - `Dictionary`
+        - 성공시 `{"success": True, "problems": [{"id": <problem id>, "level": <problem level>, "url": <problem url>}]}`
         - 실패시 `{"success": False, "statusCode": <error status code>}`
