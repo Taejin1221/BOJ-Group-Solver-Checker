@@ -1,6 +1,6 @@
 import json, sys
 
-from BOJ_Crawler import get_solved_problem, get_tag_problems, sort_problems_by_level
+from boj_crawler import get_solved_problem, get_tag_problems, sort_problems_by_level
 
 if (sys.argv[1] == '-s' or sys.argv[1] == '--solved'): # Group member들이 푼 문제 list가 주어졌을 때
     with open(sys.argv[2]) as f:
