@@ -31,6 +31,27 @@ def get_solved_problem(user: str):
     else:
         return {"success": False, "statusCode": response.status_code}
 
+
+def get_solved_problems_bulk(user_list: list[str]):
+    solved_problems_of_users = []
+    for user in user_list:
+        result = get_solved_problem(user)
+        if result["success"]:
+            solved_problems_of_users.append({
+                "handle": user,
+                "solved": len(result["problems"]),
+                "problems": result["problems"]
+            })
+        else:
+            print(f"ERROR - Failed to get {user}'s problem list - Error code: {result['statusCode']}")
+            solved_problems_of_users.append({
+                "handl": user,
+                "solved": -1,
+                "problems": []
+            })
+
+    return solved_problems_of_users
+
 def get_problems_by_tag(tag: int):
     url = f'https://www.acmicpc.net/problemset?sort=ac_desc&algo={tag}'
 
