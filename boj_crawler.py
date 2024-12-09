@@ -1,15 +1,17 @@
-import requests, json
-from bs4 import BeautifulSoup
 from datetime import datetime
+
+import json
+import requests
+from bs4 import BeautifulSoup
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2719.1708 Safari/537.36"}
 TIER_LIST = ['Unrated/NotRatable', 'Bronze V', 'Bronze VI', 'Bronze III', 'Bronze II', 'Bronze I', 'Silver V', 'Silver VI', 'Silver III', 'Silver II', 'Silver I', 'Gold V', 'Gold VI', 'Gold III', 'Gold II', 'Gold I', 'Platinum V', 'Platinum VI', 'Platinum III', 'Platinum II', 'Platinum I', 'Diamond V', 'Diamond VI', 'Diamond III', 'Diamond II', 'Diamond I', 'Ruby V', 'Ruby VI', 'Ruby III', 'Ruby II', 'Ruby I']
 
-def get_solved_problem(user):
+def get_solved_by_handle(user: str):
     url = f'https://www.acmicpc.net/user/{user}'
     
     response = requests.get(url, headers=HEADERS)
-    if (response.status_code == 200):
+    if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         problem_list = soup.select('body > div.wrapper > div.container.content > div.row > div:nth-child(2) > div > div.col-md-9 > div:nth-child(2) > div.panel-body > div > a')
     
@@ -25,15 +27,36 @@ def get_solved_problem(user):
         with open(file_name, 'w') as f:
             json.dump(user_info, f)
 
-        return {"success": True, "fileName": file_name}
+        return {"success": True, "problems": solved_problem}
     else:
         return {"success": False, "statusCode": response.status_code}
 
-def get_tag_problems(tag: int):
+
+def get_solved_by_handle_bulk(user_list: list[str]):
+    solved_problems_of_users = []
+    for user in user_list:
+        result = get_solved_by_handle(user)
+        if result["success"]:
+            solved_problems_of_users.append({
+                "handle": user,
+                "solved": len(result["problems"]),
+                "problems": result["problems"]
+            })
+        else:
+            print(f"ERROR - Failed to get {user}'s problem list - Error code: {result['statusCode']}")
+            solved_problems_of_users.append({
+                "handle": user,
+                "solved": -1,
+                "problems": []
+            })
+
+    return solved_problems_of_users
+
+def get_problems_by_tag(tag: int):
     url = f'https://www.acmicpc.net/problemset?sort=ac_desc&algo={tag}'
 
     response = requests.get(url, headers=HEADERS)
-    if (response.status_code == 200):
+    if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         problem_list = soup.select('#problemset > tbody > tr')
 
@@ -47,7 +70,7 @@ def sort_problems_by_level(problems: list[int]):
     url = f"https://solved.ac/api/v3/problem/lookup?problemIds={','.join(list(map(str, problems)))}"
     res = requests.get(url)
 
-    if (res.status_code == 200):
+    if res.status_code == 200:
         problems = [{ 'id':  prob['problemId'], 'level': prob['level'], 'url': f"boj.kr/{prob['problemId']}"} for prob in res.json()]
         problems.sort(key=lambda x: x['level'])
         for prob in problems:
@@ -58,6 +81,6 @@ def sort_problems_by_level(problems: list[int]):
     else:
         return {"success": False, "statusCode": res.status_code}
 
-if (__name__ == '__main__'):
-    print(get_solved_problem('jin99'))
-    print(get_tag_problems('80'))
+if __name__ == '__main__':
+    print(get_solved_by_handle('jin99'))
+    print(get_problems_by_tag(80))
