@@ -45,7 +45,7 @@ def get_solved_by_handle_bulk(user_list: list[str]):
         else:
             print(f"ERROR - Failed to get {user}'s problem list - Error code: {result['statusCode']}")
             solved_problems_of_users.append({
-                "handl": user,
+                "handle": user,
                 "solved": -1,
                 "problems": []
             })
