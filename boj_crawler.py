@@ -9,7 +9,7 @@ def get_solved_problem(user):
     url = f'https://www.acmicpc.net/user/{user}'
     
     response = requests.get(url, headers=HEADERS)
-    if (response.status_code == 200):
+    if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         problem_list = soup.select('body > div.wrapper > div.container.content > div.row > div:nth-child(2) > div > div.col-md-9 > div:nth-child(2) > div.panel-body > div > a')
     
@@ -33,7 +33,7 @@ def get_tag_problems(tag: int):
     url = f'https://www.acmicpc.net/problemset?sort=ac_desc&algo={tag}'
 
     response = requests.get(url, headers=HEADERS)
-    if (response.status_code == 200):
+    if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         problem_list = soup.select('#problemset > tbody > tr')
 
@@ -47,7 +47,7 @@ def sort_problems_by_level(problems: list[int]):
     url = f"https://solved.ac/api/v3/problem/lookup?problemIds={','.join(list(map(str, problems)))}"
     res = requests.get(url)
 
-    if (res.status_code == 200):
+    if res.status_code == 200:
         problems = [{ 'id':  prob['problemId'], 'level': prob['level'], 'url': f"boj.kr/{prob['problemId']}"} for prob in res.json()]
         problems.sort(key=lambda x: x['level'])
         for prob in problems:
@@ -58,6 +58,6 @@ def sort_problems_by_level(problems: list[int]):
     else:
         return {"success": False, "statusCode": res.status_code}
 
-if (__name__ == '__main__'):
+if __name__ == '__main__':
     print(get_solved_problem('jin99'))
     print(get_tag_problems('80'))
