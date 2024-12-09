@@ -29,7 +29,7 @@ def get_solved_problem(user):
     else:
         return {"success": False, "statusCode": response.status_code}
 
-def get_tag_problems(tag: int):
+def get_problems_by_tag(tag: int):
     url = f'https://www.acmicpc.net/problemset?sort=ac_desc&algo={tag}'
 
     response = requests.get(url, headers=HEADERS)
@@ -60,4 +60,4 @@ def sort_problems_by_level(problems: list[int]):
 
 if __name__ == '__main__':
     print(get_solved_problem('jin99'))
-    print(get_tag_problems('80'))
+    print(get_problems_by_tag('80'))
