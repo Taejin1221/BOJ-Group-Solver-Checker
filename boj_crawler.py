@@ -32,7 +32,7 @@ def get_solved_by_handle(user: str):
         return {"success": False, "statusCode": response.status_code}
 
 
-def get_all_solved_by_handle(user_list: list[str]):
+def get_solved_by_handle_bulk(user_list: list[str]):
     solved_problems_of_users = []
     for user in user_list:
         result = get_solved_by_handle(user)
