@@ -27,7 +27,7 @@ def get_solved_problem(user: str):
         with open(file_name, 'w') as f:
             json.dump(user_info, f)
 
-        return {"success": True, "fileName": file_name}
+        return {"success": True, "problems": solved_problem}
     else:
         return {"success": False, "statusCode": response.status_code}
 
