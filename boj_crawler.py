@@ -1,6 +1,8 @@
-import requests, json
-from bs4 import BeautifulSoup
 from datetime import datetime
+
+import json
+import requests
+from bs4 import BeautifulSoup
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2719.1708 Safari/537.36"}
 TIER_LIST = ['Unrated/NotRatable', 'Bronze V', 'Bronze VI', 'Bronze III', 'Bronze II', 'Bronze I', 'Silver V', 'Silver VI', 'Silver III', 'Silver II', 'Silver I', 'Gold V', 'Gold VI', 'Gold III', 'Gold II', 'Gold I', 'Platinum V', 'Platinum VI', 'Platinum III', 'Platinum II', 'Platinum I', 'Diamond V', 'Diamond VI', 'Diamond III', 'Diamond II', 'Diamond I', 'Ruby V', 'Ruby VI', 'Ruby III', 'Ruby II', 'Ruby I']
