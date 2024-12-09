@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2719.1708 Safari/537.36"}
 TIER_LIST = ['Unrated/NotRatable', 'Bronze V', 'Bronze VI', 'Bronze III', 'Bronze II', 'Bronze I', 'Silver V', 'Silver VI', 'Silver III', 'Silver II', 'Silver I', 'Gold V', 'Gold VI', 'Gold III', 'Gold II', 'Gold I', 'Platinum V', 'Platinum VI', 'Platinum III', 'Platinum II', 'Platinum I', 'Diamond V', 'Diamond VI', 'Diamond III', 'Diamond II', 'Diamond I', 'Ruby V', 'Ruby VI', 'Ruby III', 'Ruby II', 'Ruby I']
 
-def get_solved_problem(user: str):
+def get_solved_by_handle(user: str):
     url = f'https://www.acmicpc.net/user/{user}'
     
     response = requests.get(url, headers=HEADERS)
@@ -32,10 +32,10 @@ def get_solved_problem(user: str):
         return {"success": False, "statusCode": response.status_code}
 
 
-def get_solved_problems_bulk(user_list: list[str]):
+def get_all_solved_by_handle(user_list: list[str]):
     solved_problems_of_users = []
     for user in user_list:
-        result = get_solved_problem(user)
+        result = get_solved_by_handle(user)
         if result["success"]:
             solved_problems_of_users.append({
                 "handle": user,
@@ -82,5 +82,5 @@ def sort_problems_by_level(problems: list[int]):
         return {"success": False, "statusCode": res.status_code}
 
 if __name__ == '__main__':
-    print(get_solved_problem('jin99'))
-    print(get_problems_by_tag('80'))
+    print(get_solved_by_handle('jin99'))
+    print(get_problems_by_tag(80))
