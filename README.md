@@ -8,6 +8,7 @@
     - [2. 멤버들이 안 푼 문제 확인](#2-멤버들이-안-푼-문제-확인)
         - [2-1. 직접 확인할 문제 번호 입력](#2-1-직접-확인할-문제-번호-입력)
         - [2-2. 알고리즘 태그 입력](#2-2-알고리즘-태그-입력)
+    - [3. 랜덤 디펜스](#3-랜덤-디펜스) 
 - [모듈](#모듈)
     - [boj_crawler.py](#boj_crawlerpy)
         - [get_solved_by_handle](#get_solved_by_handle)
@@ -17,8 +18,15 @@
     - [group_solver_checker.py](#group_solver_checkerpy)
         - [get_solved_user](#get_solved_user)
         - [get_unsolved_problems_by_tag](#get_unsolved_problems_by_tag)
+    - [solved_ac_api.py](#solved_ac_apipy)
+        - [get_random_defence](#get_random_defence)
+        - [get_problem_info](#get_problem_info)
 
 ## How to Use
+### 0. 필요 모듈 설치
+```shell
+$ pip install -r requirement.txt
+```
 ### 1. 멤버들의 푼 문제 확인
 #### 1-1. 멤버들이 푼 문제 직접 전달
 1. 그룹 멤버들이 푼 문제를 `.json` 파일에 `handle`, `problems`를 key로 하여 저장
@@ -66,6 +74,13 @@
         1. [백준 알고리즘](https://www.acmicpc.net/problem/tags)에서 원하는 알고리즘 클릭
         2. `https://www.acmicpc.net/problemset?sort=ac_desc&algo=<tag>` 와 같은 형식에서 `<tag>`가 알고리즘의 태그 번호
 3. 모든 그룹원들이 풀지 않은 문제가 `Diff: <level>, URL: https://www.acmicpc.net/problem/<problem>` 형식으로 출력
+
+### 3. 랜덤 디펜스
+1. 난이도와 사용자 핸들 정보를 옵션으로 하여 실행
+    ```shell
+    python3 random_defence.py -<g/s> <handle_list>.json
+    ```
+    - 랜덤으로 5문제 선정하여 `BOJ <번호>: 문제 이름` 형식으로 출력
 
 # 모듈
 ## boj_crawler.py
@@ -151,3 +166,23 @@
             }
         ]
         ```
+
+## solved_ac_api.py
+### get_random_defence
+- 사용자의 handle과 난이도가 주어지면 랜덤으로 문제 선정
+- Argument
+    - `handles`: 사용자의 핸들
+    - `tier`: 티어 정보 (g/s)
+- Return
+    - `Dictionary`
+        ```
+        [ <problem id>, <problem id>, ... ]
+        ```
+
+### get_problem_info
+- 문제가 주어지면 정보를 solved.ac를 통해 얻어 반환 
+- Argument
+    - `problem_id`: 정보를 얻으려는 문제 번호
+- Return
+    - `Dictionary`
+        - 반환 값은 [unofficial-documentation](https://solvedac.github.io/unofficial-documentation/#/operations/searchProblem) 참고
