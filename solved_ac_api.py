@@ -18,3 +18,9 @@ def get_random_defence(handles: list[str], tier: str = "g") -> list[int]:
     problems = [item["problemId"] for item in items]
 
     return problems
+
+def get_problem_info(problem_id: int) -> dict:
+    response = requests.get(f"https://solved.ac/api/v3/search/problem?direction=asc&sort=id&query={problem_id}")
+    item = json.loads(response.text)["items"][0]
+
+    return item
